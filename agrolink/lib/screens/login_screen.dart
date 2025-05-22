@@ -26,7 +26,7 @@ class LoginScreen extends StatelessWidget {
             CustomButton(
               text: 'Ingresar',
               onPressed: () async {
-                final user = await AuthService().loginUser(
+                final user = await AuthService().login(
                   emailCtrl.text.trim(),
                   passCtrl.text.trim(),
                 );
