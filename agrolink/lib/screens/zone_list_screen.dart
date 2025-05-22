@@ -1,31 +1,32 @@
 import 'package:flutter/material.dart';
-import '../theme/colors.dart';
+import '../services/zone_service.dart';
+import '../models/zone.dart';
 
 class ZoneListScreen extends StatelessWidget {
-  const ZoneListScreen({super.key});
+  final ZoneService zoneService = ZoneService();
 
-  final List<String> zones = const [
-    'Zona Norte - Sucre',
-    'Zona Centro - Bolívar',
-    'Zona Sur - Córdoba',
-  ];
+  ZoneListScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppColors.primaryGreen,
-        title: const Text('Lista de Zonas'),
-      ),
-      body: ListView.builder(
-        itemCount: zones.length,
-        itemBuilder: (context, index) {
-          return ListTile(
-            title: Text(
-              zones[index],
-              style: const TextStyle(color: AppColors.greyText),
-            ),
-            leading: const Icon(Icons.agriculture, color: AppColors.primaryGreen),
+      appBar: AppBar(title: const Text('Zonas Registradas')),
+      body: StreamBuilder<List<Zone>>(
+        stream: zoneService.getZones(),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) return const Text('Error al cargar zonas');
+          if (!snapshot.hasData) return const CircularProgressIndicator();
+
+          final zones = snapshot.data!;
+          return ListView.builder(
+            itemCount: zones.length,
+            itemBuilder: (_, index) {
+              final zone = zones[index];
+              return ListTile(
+                title: Text(zone.name),
+                subtitle: Text('${zone.cropType} - ${zone.status}'),
+              );
+            },
           );
         },
       ),
