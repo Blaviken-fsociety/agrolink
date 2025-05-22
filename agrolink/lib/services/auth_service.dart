@@ -1,37 +1,54 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _db = FirebaseFirestore.instance;
 
-  // Registro con email y contraseña
-  Future<User?> registerUser(String email, String password) async {
+  Future<User?> registerUser(
+    String email,
+    String password, {
+    required String name,
+    required String phone,
+    required String zone,
+  }) async {
     try {
       UserCredential result = await _auth.createUserWithEmailAndPassword(
-          email: email, password: password);
-      return result.user;
+        email: email,
+        password: password,
+      );
+
+      User? user = result.user;
+
+      if (user != null) {
+        // Guardar datos adicionales en Firestore
+        await _db.collection('users').doc(user.uid).set({
+          'name': name,
+          'email': email,
+          'phone': phone,
+          'zone': zone,
+          'uid': user.uid,
+          'createdAt': FieldValue.serverTimestamp(),
+        });
+      }
+
+      return user;
     } catch (e) {
-      print('Error en el registro: $e');
+      print('Error en registerUser: $e'); // Para depuración
       return null;
     }
   }
 
-  // Inicio de sesión
-  Future<User?> loginUser(String email, String password) async {
+  Future<User?> login(String email, String password) async {
     try {
       UserCredential result = await _auth.signInWithEmailAndPassword(
-          email: email, password: password);
+        email: email,
+        password: password,
+      );
       return result.user;
     } catch (e) {
-      print('Error al iniciar sesión: $e');
+      print('Error en login: $e'); // Para depuración
       return null;
     }
   }
-
-  // Cerrar sesión
-  Future<void> signOut() async {
-    await _auth.signOut();
-  }
-
-  // Usuario actual
-  User? get currentUser => _auth.currentUser;
 }
