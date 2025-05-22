@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../theme/colors.dart';
+import '../widgets/custom_input.dart';
+import '../widgets/custom_button.dart';
 
 class ZoneRegisterScreen extends StatelessWidget {
   const ZoneRegisterScreen({super.key});
@@ -7,40 +8,43 @@ class ZoneRegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Registrar Parcela'),
-        backgroundColor: AppColors.primaryGreen,
-      ),
+      appBar: AppBar(title: const Text('Registro de parcela')),
       body: Padding(
-        padding: const EdgeInsets.all(24.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            _buildInput('Nombre de la parcela'),
+            CustomInput(label: 'Nombre'),
+            const SizedBox(height: 12),
+            CustomInput(label: 'Tamaño en hectáreas'),
+            const SizedBox(height: 12),
+            DropdownButtonFormField<String>(
+              items: const [
+                DropdownMenuItem(value: 'Hortalizas y vegetales', child: Text('Hortalizas y vegetales')),
+                DropdownMenuItem(value: 'Cereales', child: Text('Cereales')),
+              ],
+              onChanged: (value) {},
+              decoration: const InputDecoration(labelText: 'Categoría'),
+            ),
+            const SizedBox(height: 12),
+            DropdownButtonFormField<String>(
+              items: const [
+                DropdownMenuItem(value: 'Tomate', child: Text('Tomate')),
+                DropdownMenuItem(value: 'Lechuga', child: Text('Lechuga')),
+              ],
+              onChanged: (value) {},
+              decoration: const InputDecoration(labelText: 'Tipo de cultivo'),
+            ),
+            const SizedBox(height: 12),
+            CustomInput(label: 'Estado actual'),
             const SizedBox(height: 20),
-            _buildInput('Departamento'),
-            const SizedBox(height: 20),
-            _buildInput('Municipio'),
-            const SizedBox(height: 20),
-            ElevatedButton(
+            CustomButton(
+              text: 'Registrar',
               onPressed: () {
-                // Guardar parcela
+                // Lógica de registro
               },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primaryGreen,
-              ),
-              child: const Text('Registrar'),
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildInput(String label) {
-    return TextField(
-      decoration: InputDecoration(
-        labelText: label,
-        border: const OutlineInputBorder(),
       ),
     );
   }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../theme/colors.dart';
+import '../widgets/custom_button.dart';
 
 class ParticipationRegisterScreen extends StatelessWidget {
   const ParticipationRegisterScreen({super.key});
@@ -7,41 +7,55 @@ class ParticipationRegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Registrar Participación'),
-        backgroundColor: AppColors.primaryGreen,
-      ),
+      appBar: AppBar(title: const Text('Registro de participación')),
       body: Padding(
-        padding: const EdgeInsets.all(24.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildInput('Nombre del participante'),
+            const Text('Parcela: La Esperanza\nTamaño: 0.1 ha\nCultivo: Tomate'),
             const SizedBox(height: 20),
-            _buildInput('Zona'),
+            const Text('Participantes inscritos:'),
+            const Text('• Juan Perez - Limpieza'),
+            const Text('• Ricardo Ortiz - Riego'),
             const SizedBox(height: 20),
-            _buildInput('Actividad realizada'),
+            const Text('Tareas:'),
+            const SizedBox(height: 8),
+            Wrap(
+              spacing: 10,
+              children: [
+                RadioButtonOption('Siembra'),
+                RadioButtonOption('Riego'),
+                RadioButtonOption('Poda'),
+                RadioButtonOption('Limpieza'),
+              ],
+            ),
             const SizedBox(height: 20),
-            ElevatedButton(
+            CustomButton(
+              text: 'Registrar',
               onPressed: () {
-                // Guardar participación
+                // Lógica de registro
               },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primaryGreen,
-              ),
-              child: const Text('Registrar'),
             ),
           ],
         ),
       ),
     );
   }
+}
 
-  Widget _buildInput(String label) {
-    return TextField(
-      decoration: InputDecoration(
-        labelText: label,
-        border: const OutlineInputBorder(),
-      ),
+class RadioButtonOption extends StatelessWidget {
+  final String label;
+  const RadioButtonOption(this.label, {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Radio(value: label, groupValue: null, onChanged: (_) {}),
+        Text(label),
+      ],
     );
   }
 }

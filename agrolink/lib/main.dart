@@ -13,6 +13,10 @@ class AgroLinkApp extends StatelessWidget {
     return MaterialApp(
       title: 'AgroLink',
       debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primarySwatch: Colors.green,
+        scaffoldBackgroundColor: Colors.white,
+      ),
       home: const LoginScreen(),
     );
   }

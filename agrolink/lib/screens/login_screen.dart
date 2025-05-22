@@ -1,55 +1,57 @@
 import 'package:flutter/material.dart';
-import '../theme/colors.dart';
+import '../widgets/custom_input.dart';
+import '../widgets/custom_button.dart';
+import 'user_register_screen.dart'; // Para navegación
+import 'zone_register_screen.dart'; // Ejemplo de destino tras login
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController emailController = TextEditingController();
+    TextEditingController passwordController = TextEditingController();
+
     return Scaffold(
-      backgroundColor: AppColors.softBackground,
+      appBar: AppBar(title: const Text('Iniciar sesión')),
       body: Padding(
-        padding: const EdgeInsets.all(24.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
-              'AgroLink',
-              style: TextStyle(
-                fontSize: 32,
-                fontWeight: FontWeight.bold,
-                color: AppColors.primaryGreen,
-              ),
+            CustomInput(
+              label: 'Correo electrónico',
+              controller: emailController,
             ),
-            const SizedBox(height: 40),
-            TextField(
-              decoration: const InputDecoration(
-                labelText: 'Digite usuario',
-                border: OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 20),
-            TextField(
+            const SizedBox(height: 12),
+            CustomInput(
+              label: 'Contraseña',
+              controller: passwordController,
               obscureText: true,
-              decoration: const InputDecoration(
-                labelText: 'Digite contraseña',
-                border: OutlineInputBorder(),
-              ),
             ),
             const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {},
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primaryGreen,
-              ),
-              child: const Text('Iniciar Sesión'),
+            CustomButton(
+              text: 'Ingresar',
+              onPressed: () {
+                // Aquí podrías validar el login con Firebase o API
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const ZoneRegisterScreen(), // o HomeScreen si lo agregas
+                  ),
+                );
+              },
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 12),
             TextButton(
               onPressed: () {
-                // Navegar al registro de usuario
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const UserRegisterScreen(),
+                  ),
+                );
               },
-              child: const Text('¿No tiene una cuenta? Cree una.'),
+              child: const Text('¿No tienes cuenta? Regístrate aquí'),
             ),
           ],
         ),

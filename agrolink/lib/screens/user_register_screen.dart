@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../theme/colors.dart';
+import '../widgets/custom_input.dart';
+import '../widgets/custom_button.dart';
 
 class UserRegisterScreen extends StatelessWidget {
   const UserRegisterScreen({super.key});
@@ -7,41 +8,31 @@ class UserRegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Registrar Usuario'),
-        backgroundColor: AppColors.primaryGreen,
-      ),
+      appBar: AppBar(title: const Text('Registro usuario')),
       body: Padding(
-        padding: const EdgeInsets.all(24.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            _buildInput('Nombre'),
+            CustomInput(label: 'Nombres y apellidos'),
+            const SizedBox(height: 12),
+            CustomInput(label: 'Correo electrónico'),
+            const SizedBox(height: 12),
+            CustomInput(label: 'Teléfono'),
+            const SizedBox(height: 12),
+            CustomInput(label: 'Zona de residencia o cercanía'),
+            const SizedBox(height: 12),
+            CustomInput(label: 'Contraseña', obscureText: true),
+            const SizedBox(height: 12),
+            CustomInput(label: 'Confirmación contraseña', obscureText: true),
             const SizedBox(height: 20),
-            _buildInput('Correo electrónico'),
-            const SizedBox(height: 20),
-            _buildInput('Contraseña', obscure: true),
-            const SizedBox(height: 20),
-            ElevatedButton(
+            CustomButton(
+              text: 'Registrarse',
               onPressed: () {
-                // Guardar usuario
+                // Lógica de registro
               },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primaryGreen,
-              ),
-              child: const Text('Crear cuenta'),
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildInput(String label, {bool obscure = false}) {
-    return TextField(
-      obscureText: obscure,
-      decoration: InputDecoration(
-        labelText: label,
-        border: const OutlineInputBorder(),
       ),
     );
   }
