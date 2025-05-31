@@ -3,12 +3,12 @@ import '../services/zone_service.dart';
 import '../models/zone.dart';
 
 class ZoneListScreen extends StatelessWidget {
-  final ZoneService zoneService = ZoneService();
-
-  ZoneListScreen({super.key});
+  const ZoneListScreen({super.key}); 
 
   @override
   Widget build(BuildContext context) {
+    final zoneService = ZoneService(); 
+
     return Scaffold(
       appBar: AppBar(title: const Text('Zonas Registradas')),
       body: StreamBuilder<List<Zone>>(
