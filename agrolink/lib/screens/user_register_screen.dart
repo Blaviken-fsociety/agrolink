@@ -14,6 +14,73 @@ class UserRegisterScreen extends StatelessWidget {
     final TextEditingController zoneCtrl = TextEditingController();
     final TextEditingController passCtrl = TextEditingController();
     final TextEditingController confirmPassCtrl = TextEditingController();
+    final ValueNotifier<List<String>> availabilityCtrl =
+        ValueNotifier<List<String>>([]);
+
+    final List<String> daysOfWeek = [
+      'Domingo',
+      'Lunes',
+      'Martes',
+      'Miércoles',
+      'Jueves',
+      'Viernes',
+      'Sábado',
+    ];
+
+    void showMultiSelectDialog() async {
+      final List<String> tempSelected = List.from(availabilityCtrl.value);
+
+      final selectedDays = await showDialog<List<String>>(
+        context: context,
+        builder: (BuildContext context) {
+          return StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
+              return AlertDialog(
+                title: const Text('Selecciona días de disponibilidad'),
+                content: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children:
+                        daysOfWeek.map((day) {
+                          return CheckboxListTile(
+                            title: Text(day),
+                            value: tempSelected.contains(day),
+                            onChanged: (bool? value) {
+                              setState(() {
+                                if (value == true) {
+                                  if (!tempSelected.contains(day)) {
+                                    tempSelected.add(day);
+                                  }
+                                } else {
+                                  tempSelected.remove(day);
+                                }
+                              });
+                            },
+                          );
+                        }).toList(),
+                  ),
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(context, tempSelected),
+                    child: const Text('Aceptar'),
+                  ),
+                  TextButton(
+                    onPressed:
+                        () => Navigator.pop(context, availabilityCtrl.value),
+                    child: const Text('Cancelar'),
+                  ),
+                ],
+              );
+            },
+          );
+        },
+      );
+
+      if (selectedDays != null) {
+        availabilityCtrl.value = selectedDays;
+      }
+    }
 
     return Scaffold(
       appBar: AppBar(title: const Text('Registro de Usuario')),
@@ -27,7 +94,41 @@ class UserRegisterScreen extends StatelessWidget {
             const SizedBox(height: 10),
             CustomInput(label: 'Teléfono', controller: phoneCtrl),
             const SizedBox(height: 10),
-            CustomInput(label: 'Zona de residencia o cercanía', controller: zoneCtrl),
+            CustomInput(
+              label: 'Zona de residencia o cercanía',
+              controller: zoneCtrl,
+            ),
+            const SizedBox(height: 10),
+            InkWell(
+              onTap: showMultiSelectDialog,
+              child: InputDecorator(
+                decoration: const InputDecoration(
+                  labelText: 'Días de disponibilidad',
+                  border: OutlineInputBorder(),
+                ),
+                child: Text(
+                  availabilityCtrl.value.isEmpty
+                      ? 'Selecciona los días'
+                      : availabilityCtrl.value.join(', '),
+                ),
+              ),
+            ),
+            const SizedBox(height: 10),
+            Wrap(
+              spacing: 8.0,
+              children:
+                  availabilityCtrl.value.map((day) {
+                    return Chip(
+                      label: Text(day),
+                      onDeleted: () {
+                        availabilityCtrl.value =
+                            availabilityCtrl.value
+                                .where((d) => d != day)
+                                .toList();
+                      },
+                    );
+                  }).toList(),
+            ),
             const SizedBox(height: 10),
             CustomInput(
               label: 'Contraseña',
@@ -46,7 +147,19 @@ class UserRegisterScreen extends StatelessWidget {
               onPressed: () async {
                 if (passCtrl.text.trim() != confirmPassCtrl.text.trim()) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Las contraseñas no coinciden')),
+                    const SnackBar(
+                      content: Text('Las contraseñas no coinciden'),
+                    ),
+                  );
+                  return;
+                }
+                if (availabilityCtrl.value.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text(
+                        'Selecciona al menos un día de disponibilidad',
+                      ),
+                    ),
                   );
                   return;
                 }
@@ -57,6 +170,7 @@ class UserRegisterScreen extends StatelessWidget {
                   name: nameCtrl.text.trim(),
                   phone: phoneCtrl.text.trim(),
                   zone: zoneCtrl.text.trim(),
+                  availability: availabilityCtrl.value,
                 );
 
                 if (user != null) {
