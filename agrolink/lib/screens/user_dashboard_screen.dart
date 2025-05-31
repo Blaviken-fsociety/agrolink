@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import '../theme/colors.dart';
-import 'participation_register_screen.dart';
 import 'workshops_screen.dart';
 import 'statistics_screen.dart';
-import 'my_participation_screen.dart';
 import 'login_screen.dart'; // Import the LoginScreen
+import 'task_list_screen.dart';
+import 'profile_screen.dart'; // Import the ProfileScreen
+import 'registro_screen.dart';
 
 class UserDashboardScreen extends StatelessWidget {
   const UserDashboardScreen({super.key});
@@ -74,6 +75,20 @@ class UserDashboardScreen extends StatelessWidget {
           icon: const Icon(Icons.logout, color: Colors.white),
           onPressed: () => _showLogoutDialog(context),
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(
+              Icons.account_circle,
+              color: Colors.white,
+              size: 28,
+            ),
+            onPressed:
+                () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const UserProfileScreen()),
+                ),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
@@ -114,19 +129,19 @@ class UserDashboardScreen extends StatelessWidget {
                       () => Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (_) => const MyParticipationScreen(),
+                          builder: (_) => const TaskListScreen(),
                         ),
                       ),
                 ),
                 _DashboardCard(
                   label: 'Registrar\nActividad',
                   icon: Icons.add_task,
-                  color: AppColors.warning,
+                  color: AppColors.darkGreen,
                   onTap:
                       () => Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (_) => const ParticipationRegisterScreen(),
+                          builder: (_) => const TaskEnrollmentScreen(),
                         ),
                       ),
                 ),

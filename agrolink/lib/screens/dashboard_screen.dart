@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import '../theme/colors.dart';
 import 'zone_register_screen.dart';
 import 'zone_list_screen.dart';
-import 'participation_register_screen.dart';
+import 'task_list_screen.dart';
 import 'workshops_screen.dart';
 import 'statistics_screen.dart';
-import 'my_participation_screen.dart';
+import 'add_task_screen.dart';
 import 'login_screen.dart'; // Import the LoginScreen
 
 class DashboardScreen extends StatelessWidget {
@@ -73,10 +73,7 @@ class DashboardScreen extends StatelessWidget {
         centerTitle: true,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(
-            Icons.logout,
-            color: Colors.white,
-          ),
+          icon: const Icon(Icons.logout, color: Colors.white),
           onPressed: () => _showLogoutDialog(context),
         ),
       ),
@@ -96,13 +93,10 @@ class DashboardScreen extends StatelessWidget {
             const SizedBox(height: 8),
             const Text(
               'Gestiona tu participación en el proyecto de agricultura urbana',
-              style: TextStyle(
-                fontSize: 16,
-                color: AppColors.greyText,
-              ),
+              style: TextStyle(fontSize: 16, color: AppColors.greyText),
             ),
             const SizedBox(height: 30),
-            
+
             // Sección principal - Gestión
             _buildSectionTitle('Gestión de Espacios'),
             const SizedBox(height: 15),
@@ -118,25 +112,29 @@ class DashboardScreen extends StatelessWidget {
                   label: 'Registrar\nZona de Cultivo',
                   icon: Icons.add_location_alt,
                   color: AppColors.primaryGreen,
-                  onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (_) => const ZoneRegisterScreen()),
-                  ),
+                  onTap:
+                      () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const ZoneRegisterScreen(),
+                        ),
+                      ),
                 ),
                 _DashboardCard(
                   label: 'Lista de\nZonas',
                   icon: Icons.list_alt,
                   color: AppColors.success,
-                  onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (_) => ZoneListScreen()),
-                  ),
+                  onTap:
+                      () => Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => ZoneListScreen()),
+                      ),
                 ),
               ],
             ),
-            
+
             const SizedBox(height: 30),
-            
+
             // Sección participación
             _buildSectionTitle('Participación Comunitaria'),
             const SizedBox(height: 15),
@@ -149,28 +147,34 @@ class DashboardScreen extends StatelessWidget {
               childAspectRatio: 1.1,
               children: [
                 _DashboardCard(
-                  label: 'Mi\nParticipación',
+                  label: 'Añadir\nTareas',
                   icon: Icons.person_outline,
                   color: AppColors.darkGreen,
-                  onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (_) => const MyParticipationScreen()),
-                  ),
+                  onTap:
+                      () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const AddTaskScreen(),
+                        ),
+                      ),
                 ),
                 _DashboardCard(
-                  label: 'Registrar\nActividad',
+                  label: 'Tareas',
                   icon: Icons.add_task,
-                  color: AppColors.warning,
-                  onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (_) => const ParticipationRegisterScreen()),
-                  ),
+                  color: AppColors.darkGreen,
+                  onTap:
+                      () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const TaskListScreen(),
+                        ),
+                      ),
                 ),
               ],
             ),
-            
+
             const SizedBox(height: 30),
-            
+
             // Sección educación y estadísticas
             _buildSectionTitle('Educación y Seguimiento'),
             const SizedBox(height: 15),
@@ -186,19 +190,25 @@ class DashboardScreen extends StatelessWidget {
                   label: 'Talleres y\nEventos',
                   icon: Icons.school,
                   color: AppColors.primaryGreen,
-                  onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (_) => const WorkshopsScreen()),
-                  ),
+                  onTap:
+                      () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const WorkshopsScreen(),
+                        ),
+                      ),
                 ),
                 _DashboardCard(
                   label: 'Estadísticas\ne Impacto',
                   icon: Icons.analytics,
                   color: AppColors.success,
-                  onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (_) => const StatisticsScreen()),
-                  ),
+                  onTap:
+                      () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const StatisticsScreen(),
+                        ),
+                      ),
                 ),
               ],
             ),
@@ -267,11 +277,7 @@ class _DashboardCard extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              icon,
-              size: 40,
-              color: color,
-            ),
+            Icon(icon, size: 40, color: color),
             const SizedBox(height: 12),
             Text(
               label,
